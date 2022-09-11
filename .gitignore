@@ -1,0 +1,13 @@
+# environment #
+.venv
+
+# django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
+# DS Store #
+*.DS_Store
