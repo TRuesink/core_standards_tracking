@@ -1,5 +1,6 @@
 # environment #
 .venv
+dev.env
 
 # django #
 *.log
@@ -11,3 +12,6 @@ media
 
 # DS Store #
 *.DS_Store
+
+# DB
+/data
