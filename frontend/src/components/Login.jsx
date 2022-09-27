@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,10 +11,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { connect } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { loginRequest } from '../../store/actions/auth.actions';
+import { loginRequest } from '../store/actions/auth.actions';
+import { selectIsAuthenticated } from '../store/selectors';
 
 function Copyright(props) {
   return (
@@ -28,7 +28,7 @@ function Copyright(props) {
     >
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        trackmystandards.com
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -50,7 +50,7 @@ const validationSchema = yup.object({
 const Login = (props) => {
   const formik = useFormik({
     initialValues: {
-      email: 'example@email.com',
+      email: '',
       password: '',
     },
     validationSchema: validationSchema,
@@ -61,6 +61,7 @@ const Login = (props) => {
 
   return (
     <Container component="main" maxWidth="xs">
+      {props.isAuthenticated && <Navigate to="/" replace={true} />}
       <CssBaseline />
       <Box
         sx={{
@@ -70,7 +71,7 @@ const Login = (props) => {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'primary.light' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'primary.dark' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -108,10 +109,6 @@ const Login = (props) => {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -139,6 +136,8 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  isAuthenticated: selectIsAuthenticated(state),
+});
 
 export default connect(mapStateToProps, { loginRequest })(Login);

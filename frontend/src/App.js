@@ -8,9 +8,11 @@ import { selectIsAuthenticated } from './store/selectors';
 import { getUserRequest } from './store/actions/auth.actions';
 
 function App({ getUserRequest, isAuthenticated }) {
+
   useEffect(() => {
     getUserRequest();
-  }, []);
+  }, [isAuthenticated, getUserRequest]);
+
   return (
     <BrowserRouter>
       <Routes>
