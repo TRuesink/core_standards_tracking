@@ -30,6 +30,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         token: action.token,
+        isAuthenticated: true,
         requestStatus: REQUEST_STATUS.REQUEST_SUCCESS,
       };
     case LOGIN_FAILURE:
