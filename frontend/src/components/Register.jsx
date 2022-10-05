@@ -15,7 +15,7 @@ import { Link, Navigate } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { loginRequest } from '../store/actions/auth.actions';
+import { registerRequest } from '../store/actions/auth.actions';
 import { selectIsAuthenticated } from '../store/selectors';
 
 function Copyright(props) {
@@ -37,6 +37,10 @@ function Copyright(props) {
 }
 
 const validationSchema = yup.object({
+  username: yup
+    .string('Enter your username')
+    .min(8, 'username must be at least 8 characters long')
+    .required('Username is required'),
   email: yup
     .string('Enter your email')
     .email('Enter a valid email')
@@ -45,17 +49,28 @@ const validationSchema = yup.object({
     .string('Enter your password')
     .min(8, 'Password should be of minimum 8 characters length')
     .required('Password is required'),
+  passwordConfirmation: yup
+    .string('Confirm your password')
+    .oneOf([yup.ref('password'), null], 'Passwords must match')
+    .required('Please re-enter your password'),
 });
 
-const Login = (props) => {
+const Register = (props) => {
   const formik = useFormik({
     initialValues: {
+      username: '',
       email: '',
       password: '',
+      passwordConfirmation: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      props.loginRequest({ email: values.email, password: values.password });
+      props.registerRequest({
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        passwordConfirmation: values.passwordConfirmation,
+      });
     },
   });
 
@@ -75,7 +90,7 @@ const Login = (props) => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Register
         </Typography>
         <Box
           component="form"
@@ -83,6 +98,19 @@ const Login = (props) => {
           noValidate
           sx={{ mt: 1 }}
         >
+          <TextField
+            margin="normal"
+            fullWidth
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+          />
           <TextField
             margin="normal"
             fullWidth
@@ -94,7 +122,6 @@ const Login = (props) => {
             label="Email Address"
             name="email"
             autoComplete="email"
-            autoFocus
           />
           <TextField
             margin="normal"
@@ -109,23 +136,36 @@ const Login = (props) => {
             id="password"
             autoComplete="current-password"
           />
+          <TextField
+            margin="normal"
+            value={formik.values.passwordConfirmation}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.passwordConfirmation &&
+              Boolean(formik.errors.passwordConfirmation)
+            }
+            helperText={
+              formik.touched.passwordConfirmation &&
+              formik.errors.passwordConfirmation
+            }
+            fullWidth
+            name="passwordConfirmation"
+            label="Password Confirmation"
+            type="password"
+            id="passwordConfirmation"
+          />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Register
           </Button>
           <Grid container>
-            <Grid item xs>
-              <MuiLink href="#" variant="body2">
-                Forgot password?
-              </MuiLink>
-            </Grid>
             <Grid item>
-              <MuiLink component={Link} to="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <MuiLink component={Link} to="/login" variant="body2">
+                {'Already have an account? Sign In'}
               </MuiLink>
             </Grid>
           </Grid>
@@ -140,4 +180,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: selectIsAuthenticated(state),
 });
 
-export default connect(mapStateToProps, { loginRequest })(Login);
+export default connect(mapStateToProps, { registerRequest })(Register);

@@ -6,9 +6,9 @@ import Login from './components/Login';
 import Protected from './components/Protected';
 import { selectIsAuthenticated } from './store/selectors';
 import { getUserRequest } from './store/actions/auth.actions';
+import Register from './components/Register';
 
 function App({ getUserRequest, isAuthenticated }) {
-
   useEffect(() => {
     getUserRequest();
   }, [isAuthenticated, getUserRequest]);
@@ -24,7 +24,8 @@ function App({ getUserRequest, isAuthenticated }) {
             </Protected>
           }
         ></Route>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" exact element={<Login />} />
+        <Route path="/register" exact element={<Register />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,19 +1,27 @@
 import axios from 'axios';
-import paths from '../constants/paths';
+import apiUrls from '../constants/api';
 
 export const login = (email, password) =>
-  axios.post(paths.login, { email, password });
+  axios.post(apiUrls.login, { email, password });
 
 export const getUser = (token) =>
-  axios.get(paths.user, {
+  axios.get(apiUrls.user, {
     headers: {
       Authorization: `Token ${token}`,
     },
   });
 
 export const logout = (token) =>
-  axios.post(paths.logout, {
+  axios.post(apiUrls.logout, {
     headers: {
       Authorization: `Token ${token}`,
     },
+  });
+
+export const register = (username, email, password, passwordConfirmation) =>
+  axios.post(apiUrls.register, {
+    username,
+    email,
+    password1: password,
+    password2: passwordConfirmation,
   });

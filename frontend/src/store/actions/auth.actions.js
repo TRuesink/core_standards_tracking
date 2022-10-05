@@ -10,6 +10,10 @@ export const LOGOUT_REQUEST = 'auth/LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'auth/LOGOUT_FAILURE';
 
+export const REGISTER_REQUEST = 'auth/REGISTER_REQUEST';
+export const REGISTER_SUCCESS = 'auth/REGISTER_SUCCESS';
+export const REGISTER_FAILURE = 'auth/REGISTER_FAILURE';
+
 export const loginRequest = ({ email, password }) => ({
   type: LOGIN_REQUEST,
   email,
@@ -50,5 +54,28 @@ export const logoutSuccess = () => ({
 
 export const logoutFailure = ({ error }) => ({
   type: LOGOUT_FAILURE,
+  error,
+});
+
+export const registerRequest = ({
+  username,
+  email,
+  password,
+  passwordConfirmation,
+}) => ({
+  type: REGISTER_REQUEST,
+  username,
+  email,
+  password,
+  passwordConfirmation,
+});
+
+export const registerSuccess = ({ token }) => ({
+  type: REGISTER_SUCCESS,
+  token,
+});
+
+export const registerFailure = ({ error }) => ({
+  type: REGISTER_FAILURE,
   error,
 });
