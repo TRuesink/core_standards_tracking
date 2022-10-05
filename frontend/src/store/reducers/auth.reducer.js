@@ -9,6 +9,9 @@ import {
   LOGOUT_FAILURE,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
+  REGISTER_FAILURE,
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
 } from '../actions/auth.actions';
 
 const INITIAL_STATE = {
@@ -68,6 +71,24 @@ const authReducer = (state = INITIAL_STATE, action) => {
         requestStatus: REQUEST_STATUS.REQUEST_SUCCESS,
       };
     case LOGOUT_FAILURE:
+      return {
+        ...state,
+        requestStatus: REQUEST_STATUS.REQUEST_FAILED,
+        error: action.error,
+      };
+    case REGISTER_REQUEST:
+      return {
+        ...state,
+        requestStatus: REQUEST_STATUS.REQUESTED,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        token: action.token,
+        isAuthenticated: true,
+        requestStatus: REQUEST_STATUS.REQUEST_SUCCESS,
+      };
+    case REGISTER_FAILURE:
       return {
         ...state,
         requestStatus: REQUEST_STATUS.REQUEST_FAILED,
